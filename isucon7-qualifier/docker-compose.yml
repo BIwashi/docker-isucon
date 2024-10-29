@@ -4,17 +4,19 @@ services:
     build:
       context: ./docker/bench
       args:
-        GIT_URL: https://github.com/isucon/isucon7-qualify.git
+        GIT_URL: https://github.com/BIwashi/isucon7-qualify.git
     image: isucon7-qualifier-bench
-    depends_on:
-      - web
+    # depends_on:
+    #   - web
     networks:
       - frontend
+    profiles:
+      - bench
   web:
     build:
       context: ./docker/web
       args:
-        GIT_URL: https://github.com/isucon/isucon7-qualify.git
+        GIT_URL: https://github.com/BIwashi/isucon7-qualify.git
     image: isucon7-qualifier-web:nginx
     networks:
       - frontend
@@ -23,15 +25,20 @@ services:
       - app
     ports:
       - "80:80"
+    profiles:
+      - web
+      - all
+      - bench
   app:
     build:
-      #context: ./docker/app/golang
+      context: ./docker/app/golang
       #context: ./docker/app/nodejs
       #context: ./docker/app/perl
-      context: ./docker/app/python
+      # context: ./docker/app/python
       #context: ./docker/app/ruby
       args:
-        GIT_URL: https://github.com/isucon/isucon7-qualify.git
+        # GIT_URL: https://github.com/isucon/isucon7-qualify.git
+        GIT_URL: https://github.com/BIwashi/isucon7-qualify.git
     #image: isucon7-qualifier-app:golang
     #image: isucon7-qualifier-app:nodejs
     #image: isucon7-qualifier-app:perl
@@ -47,11 +54,15 @@ services:
       ISUBATA_DB_USER: isucon
       ISUBATA_DB_PASSWORD: isucon
       ISUBATA_DB_HOST: db
+    profiles:
+      - app
+      - all
   db:
     build:
       context: ./docker/db
       args:
-        GIT_URL: https://github.com/isucon/isucon7-qualify.git
+        # GIT_URL: https://github.com/isucon/isucon7-qualify.git
+        GIT_URL: https://github.com/BIwashi/isucon7-qualify.git
     image: isucon7-qualifier-db
     ports:
       - "3306"
@@ -63,6 +74,9 @@ services:
       #MYSQL_DATABASE: isubata
       #MYSQL_USER: isucon
       #MYSQL_PASSWORD: isucon
+    profiles:
+      - db
+      - all
 networks:
   frontend:
   backend:

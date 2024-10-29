@@ -1,6 +1,7 @@
 FROM golang:1.9 AS build-dev
 
-ARG GIT_URL=https://github.com/isucon/isucon7-qualify.git
+# ARG GIT_URL=https://github.com/isucon/isucon7-qualify.git
+ARG GIT_URL=https://github.com/BIwashi/isucon7-qualify.git
 
 RUN \
   git clone --depth=1 $GIT_URL /home/isucon/isubata && \
